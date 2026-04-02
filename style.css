@@ -3,7 +3,7 @@ Theme Name: Não é Agência Theme
 Theme URI: https://naoeagencia.com.br/
 Author: Willian Porto
 Description: Tema editorial rápido, responsivo e focado em SEO, inspirado em portais de notícia contemporâneos.
-Version: 3.7
+Version: 3.8
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: naoeagencia
@@ -1708,6 +1708,82 @@ select {
 	margin-top: 1.1rem;
 }
 
+.single-layout .single-content .single-stream-block {
+	position: relative;
+	margin: 1.8rem 0 2rem 22px;
+	padding: 1.2rem 1.6rem 1.5rem;
+	border: 1px solid rgba(214, 225, 240, 0.95);
+	border-radius: 28px;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 255, 0.99));
+	box-shadow: 0 16px 32px rgba(11, 43, 91, 0.06);
+}
+
+.single-layout .single-content .single-stream-block::before {
+	content: "";
+	position: absolute;
+	left: 18px;
+	top: 18px;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 50% 50%, #49b8ff 0 28%, #123a78 29% 100%);
+	box-shadow: 0 0 0 4px #fff;
+}
+
+.single-layout .single-content .single-stream-block::after {
+	content: "";
+	position: absolute;
+	right: 18px;
+	top: 20px;
+	width: 16px;
+	height: 16px;
+	background:
+		radial-gradient(circle at 2px 50%, rgba(89, 112, 143, 0.72) 0 2px, transparent 2.5px),
+		radial-gradient(circle at 8px 50%, rgba(89, 112, 143, 0.72) 0 2px, transparent 2.5px),
+		radial-gradient(circle at 14px 50%, rgba(89, 112, 143, 0.72) 0 2px, transparent 2.5px);
+}
+
+.single-layout .single-content .single-stream-block h2 {
+	max-width: 18ch;
+	margin: 0 2rem 1rem 0;
+	padding: 0 2rem 0 58px;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	font-size: clamp(2.2rem, 4.2vw, 4rem);
+	line-height: 0.98;
+	letter-spacing: -0.045em;
+}
+
+.single-layout .single-content .single-stream-block h2::before,
+.single-layout .single-content .single-stream-block h2::after {
+	content: none;
+}
+
+.single-layout .single-content .single-stream-block > p,
+.single-layout .single-content .single-stream-block > ul,
+.single-layout .single-content .single-stream-block > ol,
+.single-layout .single-content .single-stream-block > blockquote,
+.single-layout .single-content .single-stream-block > .wp-block-image,
+.single-layout .single-content .single-stream-block > .wp-block-quote,
+.single-layout .single-content .single-stream-block > .wp-block-group {
+	margin-left: 58px;
+}
+
+.single-layout .single-content .single-stream-highlight {
+	margin-top: 1.25rem;
+	padding: 1.35rem 1.55rem;
+	border-left: 6px solid #123a78;
+	border-radius: 0 22px 22px 0;
+	background: #eaf1ff;
+	box-shadow: inset 0 0 0 1px rgba(18, 58, 120, 0.04);
+	font-size: clamp(1.6rem, 3.2vw, 2.15rem);
+	font-weight: 700;
+	line-height: 1.36;
+	color: #143871;
+}
+
 .single-hero {
 	background:
 		linear-gradient(135deg, #08152b 0%, #123a78 72%, #1d5cb8 100%);
@@ -1758,5 +1834,29 @@ select {
 
 	.single-layout .single-aside {
 		grid-template-columns: 1fr;
+	}
+
+	.single-layout .single-content .single-stream-block {
+		margin-left: 0;
+		padding: 1rem 1rem 1.25rem;
+	}
+
+	.single-layout .single-content .single-stream-block h2 {
+		padding-left: 54px;
+		font-size: clamp(1.9rem, 7vw, 2.8rem);
+	}
+
+	.single-layout .single-content .single-stream-block > p,
+	.single-layout .single-content .single-stream-block > ul,
+	.single-layout .single-content .single-stream-block > ol,
+	.single-layout .single-content .single-stream-block > blockquote,
+	.single-layout .single-content .single-stream-block > .wp-block-image,
+	.single-layout .single-content .single-stream-block > .wp-block-quote,
+	.single-layout .single-content .single-stream-block > .wp-block-group {
+		margin-left: 0;
+	}
+
+	.single-layout .single-content .single-stream-highlight {
+		font-size: 1.35rem;
 	}
 }

@@ -702,3 +702,78 @@ function naoeagencia_get_ad_markup( $key, $modifier ) {
 
 	return '<div class="ad-container ' . esc_attr( $modifier ) . '"><span class="ad-label">' . esc_html__( 'Publicidade', 'naoeagencia' ) . '</span>' . $ad_code . '</div>';
 }
+
+/**
+ * Convert post content into editorial feed sections based on H2 headings.
+ *
+ * @param string $content Post content.
+ * @return string
+ */
+function naoeagencia_format_single_content_stream( $content ) {
+	if ( ! is_single() || ! in_the_loop() || ! is_main_query() || false === stripos( $content, '<h2' ) ) {
+		return $content;
+	}
+
+	libxml_use_internal_errors( true );
+
+	$document = new DOMDocument( '1.0', 'UTF-8' );
+	$loaded   = $document->loadHTML(
+		'<?xml encoding="utf-8" ?><div id="naoeagencia-content-root">' . $content . '</div>',
+		LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+	);
+
+	if ( ! $loaded ) {
+		libxml_clear_errors();
+		return $content;
+	}
+
+	$root = $document->getElementById( 'naoeagencia-content-root' );
+
+	if ( ! $root ) {
+		libxml_clear_errors();
+		return $content;
+	}
+
+	for ( $node = $root->firstChild; $node; $node = $next_node ) {
+		$next_node = $node->nextSibling;
+
+		if ( XML_ELEMENT_NODE !== $node->nodeType || 'h2' !== strtolower( $node->nodeName ) ) {
+			continue;
+		}
+
+		$section = $document->createElement( 'section' );
+		$section->setAttribute( 'class', 'single-stream-block' );
+		$root->insertBefore( $section, $node );
+
+		$paragraph_count = 0;
+
+		while ( $node && ! ( XML_ELEMENT_NODE === $node->nodeType && 'h2' === strtolower( $node->nodeName ) && $section->hasChildNodes() ) ) {
+			$next_in_group = $node->nextSibling;
+			$section->appendChild( $node );
+
+			if ( XML_ELEMENT_NODE === $node->nodeType && 'p' === strtolower( $node->nodeName ) ) {
+				$paragraph_count++;
+
+				if ( 3 === $paragraph_count ) {
+					$current_class = $node->getAttribute( 'class' );
+					$node->setAttribute( 'class', trim( $current_class . ' single-stream-highlight' ) );
+				}
+			}
+
+			$node = $next_in_group;
+		}
+
+		$next_node = $node;
+	}
+
+	$html = '';
+
+	foreach ( $root->childNodes as $child ) {
+		$html .= $document->saveHTML( $child );
+	}
+
+	libxml_clear_errors();
+
+	return $html;
+}
+add_filter( 'the_content', 'naoeagencia_format_single_content_stream', 20 );
