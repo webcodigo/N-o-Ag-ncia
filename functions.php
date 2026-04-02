@@ -53,6 +53,13 @@ add_action( 'after_setup_theme', 'naoeagencia_setup' );
  */
 function naoeagencia_scripts() {
 	wp_enqueue_style( 'naoeagencia-style', get_stylesheet_uri(), array(), wp_get_theme()->get( 'Version' ) );
+	wp_enqueue_script(
+		'naoeagencia-header-drawer',
+		get_template_directory_uri() . '/assets/js/header-drawer.js',
+		array(),
+		wp_get_theme()->get( 'Version' ),
+		true
+	);
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
@@ -860,6 +867,9 @@ function naoeagencia_format_single_content_stream( $content ) {
 		return $content;
 	}
 
+	$toc_items = array();
+	$heading_index = 0;
+
 	for ( $node = $root->firstChild; $node; $node = $next_node ) {
 		$next_node = $node->nextSibling;
 
@@ -871,6 +881,14 @@ function naoeagencia_format_single_content_stream( $content ) {
 		$section->setAttribute( 'class', 'single-stream-block' );
 		$root->insertBefore( $section, $node );
 
+		$heading_index++;
+		$heading_id = 'bloco-' . $heading_index;
+		$node->setAttribute( 'id', $heading_id );
+		$toc_items[] = array(
+			'id'    => $heading_id,
+			'label' => trim( wp_strip_all_tags( $document->saveHTML( $node ) ) ),
+		);
+
 		$paragraph_count = 0;
 
 		while ( $node && ! ( XML_ELEMENT_NODE === $node->nodeType && 'h2' === strtolower( $node->nodeName ) && $section->hasChildNodes() ) ) {
@@ -879,11 +897,6 @@ function naoeagencia_format_single_content_stream( $content ) {
 
 			if ( XML_ELEMENT_NODE === $node->nodeType && 'p' === strtolower( $node->nodeName ) ) {
 				$paragraph_count++;
-
-				if ( 1 === $paragraph_count ) {
-					$current_class = $node->getAttribute( 'class' );
-					$node->setAttribute( 'class', trim( $current_class . ' single-stream-direct' ) );
-				}
 
 				if ( 3 === $paragraph_count ) {
 					$current_class = $node->getAttribute( 'class' );
@@ -895,6 +908,30 @@ function naoeagencia_format_single_content_stream( $content ) {
 		}
 
 		$next_node = $node;
+	}
+
+	if ( ! empty( $toc_items ) ) {
+		$toc = $document->createElement( 'nav' );
+		$toc->setAttribute( 'class', 'single-stream-index' );
+		$toc->setAttribute( 'aria-label', __( 'Índice do texto', 'naoeagencia' ) );
+
+		$toc_label = $document->createElement( 'p', __( 'Índice do texto', 'naoeagencia' ) );
+		$toc_label->setAttribute( 'class', 'single-stream-index__label' );
+		$toc->appendChild( $toc_label );
+
+		$toc_list = $document->createElement( 'ol' );
+		$toc_list->setAttribute( 'class', 'single-stream-index__list' );
+
+		foreach ( $toc_items as $item ) {
+			$list_item = $document->createElement( 'li' );
+			$link      = $document->createElement( 'a', $item['label'] );
+			$link->setAttribute( 'href', '#' . $item['id'] );
+			$list_item->appendChild( $link );
+			$toc_list->appendChild( $list_item );
+		}
+
+		$toc->appendChild( $toc_list );
+		$root->insertBefore( $toc, $root->firstChild );
 	}
 
 	$html = '';

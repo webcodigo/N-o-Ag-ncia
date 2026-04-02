@@ -42,9 +42,56 @@ $header_meta_status = naoeagencia_get_editorial_setting( 'header_meta_status', _
 		</div>
 
 		<div class="header-tools">
+			<button
+				type="button"
+				class="header-drawer-toggle"
+				aria-expanded="false"
+				aria-controls="mobile-editorial-drawer"
+				aria-label="<?php esc_attr_e( 'Abrir navegação e busca', 'naoeagencia' ); ?>"
+			>
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
 			<div class="header-search">
 				<?php get_search_form(); ?>
 			</div>
 		</div>
 	</div>
 </header>
+
+<div class="header-drawer-overlay" data-header-drawer-close hidden></div>
+<aside id="mobile-editorial-drawer" class="mobile-editorial-drawer" aria-hidden="true">
+	<div class="mobile-editorial-drawer__inner">
+		<div class="mobile-editorial-drawer__top">
+			<p class="mobile-editorial-drawer__label"><?php esc_html_e( 'Busca e navegação', 'naoeagencia' ); ?></p>
+			<button
+				type="button"
+				class="mobile-editorial-drawer__close"
+				data-header-drawer-close
+				aria-label="<?php esc_attr_e( 'Fechar menu', 'naoeagencia' ); ?>"
+			>
+				<span></span>
+				<span></span>
+			</button>
+		</div>
+
+		<div class="mobile-editorial-drawer__search">
+			<?php get_search_form(); ?>
+		</div>
+
+		<nav class="mobile-editorial-drawer__nav" aria-label="<?php esc_attr_e( 'Navegação principal móvel', 'naoeagencia' ); ?>">
+			<?php
+			wp_nav_menu(
+				array(
+					'theme_location' => 'menu-1',
+					'menu_class'     => 'mobile-editorial-menu',
+					'container'      => false,
+					'depth'          => 3,
+					'fallback_cb'    => 'wp_page_menu',
+				)
+			);
+			?>
+		</nav>
+	</div>
+</aside>
