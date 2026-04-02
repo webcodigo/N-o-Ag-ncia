@@ -34,7 +34,7 @@ $hero_query       = new WP_Query( $hero_args );
 $featured_post_id = 0;
 $ticker_query     = new WP_Query(
 	array(
-		'posts_per_page'      => 5,
+		'posts_per_page'      => 2,
 		'ignore_sticky_posts' => true,
 		'post_status'         => 'publish',
 	)
@@ -43,7 +43,7 @@ $ticker_query     = new WP_Query(
 if ( $ticker_category ) {
 	$ticker_query = new WP_Query(
 		array(
-			'posts_per_page'      => 5,
+			'posts_per_page'      => 2,
 			'ignore_sticky_posts' => true,
 			'post_status'         => 'publish',
 			'cat'                 => $ticker_category,

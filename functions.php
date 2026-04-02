@@ -193,7 +193,7 @@ function naoe_tema_settings_init() {
 		'naoe-tema'
 	);
 
-	add_settings_field( 'custom_logo_url', __( 'URL do logo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'custom_logo_url', 'desc' => 'Cole a URL de uma imagem otimizada para usar como logo.' ) );
+	add_settings_field( 'custom_logo_id', __( 'Logo do site', 'naoeagencia' ), 'naoe_tema_media_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'custom_logo_id', 'preview_size' => 'medium', 'desc' => 'Selecione a logo diretamente da biblioteca de mídia do WordPress.' ) );
 	add_settings_field( 'header_meta_date', __( 'Texto da data no topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_date', 'desc' => 'Exemplo: 1 de abril de 2026' ) );
 	add_settings_field( 'header_meta_edition', __( 'Texto editorial do topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_edition', 'desc' => 'Exemplo: Edição digital em tempo real' ) );
 	add_settings_field( 'header_meta_status', __( 'Texto de status do topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_status', 'desc' => 'Exemplo: Atualizado continuamente' ) );
@@ -255,6 +255,7 @@ add_action( 'admin_init', 'naoe_tema_settings_init' );
 function naoe_tema_sanitize_settings( $input ) {
 	$sanitized = array();
 
+	$sanitized['custom_logo_id']  = empty( $input['custom_logo_id'] ) ? 0 : absint( $input['custom_logo_id'] );
 	$sanitized['custom_logo_url'] = empty( $input['custom_logo_url'] ) ? '' : esc_url_raw( $input['custom_logo_url'] );
 	$sanitized['featured_tag']    = empty( $input['featured_tag'] ) ? 0 : absint( $input['featured_tag'] );
 
@@ -294,6 +295,38 @@ function naoe_tema_textarea_render( $args ) {
 	$value   = isset( $options[ $args['id'] ] ) ? $options[ $args['id'] ] : '';
 
 	echo '<textarea name="naoe_tema_settings[' . esc_attr( $args['id'] ) . ']" rows="6" class="large-text">' . esc_textarea( $value ) . '</textarea>';
+}
+
+/**
+ * Render media picker field.
+ *
+ * @param array $args Field arguments.
+ */
+function naoe_tema_media_render( $args ) {
+	$options      = get_option( 'naoe_tema_settings', array() );
+	$attachment_id = isset( $options[ $args['id'] ] ) ? absint( $options[ $args['id'] ] ) : 0;
+	$preview_size = isset( $args['preview_size'] ) ? $args['preview_size'] : 'thumbnail';
+	$preview_url  = $attachment_id ? wp_get_attachment_image_url( $attachment_id, $preview_size ) : '';
+	$fallback_url = isset( $options['custom_logo_url'] ) ? esc_url( $options['custom_logo_url'] ) : '';
+	$display_url  = $preview_url ? $preview_url : $fallback_url;
+	?>
+	<div class="naoe-media-field" data-target="<?php echo esc_attr( $args['id'] ); ?>">
+		<input type="hidden" name="naoe_tema_settings[<?php echo esc_attr( $args['id'] ); ?>]" id="<?php echo esc_attr( $args['id'] ); ?>" value="<?php echo esc_attr( $attachment_id ); ?>">
+		<input type="hidden" name="naoe_tema_settings[custom_logo_url]" value="<?php echo esc_attr( $fallback_url ); ?>">
+		<div class="naoe-media-preview" style="<?php echo $display_url ? '' : 'display:none;'; ?>">
+			<img src="<?php echo esc_url( $display_url ); ?>" alt="" style="max-width:240px;height:auto;border-radius:12px;border:1px solid #d6e1f0;background:#fff;padding:8px;">
+		</div>
+		<p>
+			<button type="button" class="button naoe-media-select"><?php esc_html_e( 'Escolher na biblioteca', 'naoeagencia' ); ?></button>
+			<button type="button" class="button naoe-media-remove" <?php echo $display_url ? '' : 'style="display:none;"'; ?>><?php esc_html_e( 'Remover logo', 'naoeagencia' ); ?></button>
+		</p>
+	<?php
+	if ( isset( $args['desc'] ) ) {
+		echo '<p class="description">' . esc_html( $args['desc'] ) . '</p>';
+	}
+	?>
+	</div>
+	<?php
 }
 
 /**
@@ -403,6 +436,99 @@ function naoe_tema_options_page() {
 	</div>
 	<?php
 }
+
+/**
+ * Load media library on theme settings page.
+ *
+ * @param string $hook_suffix Current admin page hook.
+ * @return void
+ */
+function naoe_tema_admin_assets( $hook_suffix ) {
+	if ( 'toplevel_page_naoe-tema' !== $hook_suffix ) {
+		return;
+	}
+
+	wp_enqueue_media();
+}
+add_action( 'admin_enqueue_scripts', 'naoe_tema_admin_assets' );
+
+/**
+ * Print inline media picker script for theme settings page.
+ *
+ * @return void
+ */
+function naoe_tema_media_picker_script() {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+
+	if ( ! $screen || 'toplevel_page_naoe-tema' !== $screen->id ) {
+		return;
+	}
+	?>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			document.querySelectorAll('.naoe-media-field').forEach(function (field) {
+				var input = field.querySelector('input[type="hidden"]');
+				var previewWrap = field.querySelector('.naoe-media-preview');
+				var previewImage = previewWrap ? previewWrap.querySelector('img') : null;
+				var selectButton = field.querySelector('.naoe-media-select');
+				var removeButton = field.querySelector('.naoe-media-remove');
+				var frame;
+
+				if (!input || !selectButton) {
+					return;
+				}
+
+				selectButton.addEventListener('click', function (event) {
+					event.preventDefault();
+
+					if (frame) {
+						frame.open();
+						return;
+					}
+
+					frame = wp.media({
+						title: 'Escolher logo',
+						button: { text: 'Usar esta imagem' },
+						multiple: false,
+						library: { type: 'image' }
+					});
+
+					frame.on('select', function () {
+						var attachment = frame.state().get('selection').first().toJSON();
+						input.value = attachment.id || '';
+
+						if (previewWrap && previewImage) {
+							previewImage.src = attachment.sizes && attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
+							previewWrap.style.display = '';
+						}
+
+						if (removeButton) {
+							removeButton.style.display = '';
+						}
+					});
+
+					frame.open();
+				});
+
+				if (removeButton) {
+					removeButton.addEventListener('click', function (event) {
+						event.preventDefault();
+						input.value = '';
+
+						if (previewWrap && previewImage) {
+							previewImage.src = '';
+							previewWrap.style.display = 'none';
+						}
+
+						removeButton.style.display = 'none';
+					});
+				}
+			});
+		});
+	</script>
+	<?php
+}
+add_action( 'admin_footer', 'naoe_tema_media_picker_script' );
 
 /**
  * Get theme option by key.
@@ -753,6 +879,11 @@ function naoeagencia_format_single_content_stream( $content ) {
 
 			if ( XML_ELEMENT_NODE === $node->nodeType && 'p' === strtolower( $node->nodeName ) ) {
 				$paragraph_count++;
+
+				if ( 1 === $paragraph_count ) {
+					$current_class = $node->getAttribute( 'class' );
+					$node->setAttribute( 'class', trim( $current_class . ' single-stream-direct' ) );
+				}
 
 				if ( 3 === $paragraph_count ) {
 					$current_class = $node->getAttribute( 'class' );

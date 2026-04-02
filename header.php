@@ -11,7 +11,8 @@
 <a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Pular para o conteúdo', 'naoeagencia' ); ?></a>
 
 <?php
-$custom_logo_url = naoeagencia_get_option( 'custom_logo_url' );
+$custom_logo_id = absint( naoeagencia_get_option( 'custom_logo_id', 0 ) );
+$custom_logo_url = $custom_logo_id ? wp_get_attachment_image_url( $custom_logo_id, 'full' ) : naoeagencia_get_option( 'custom_logo_url' );
 $header_meta_date = naoeagencia_get_editorial_setting( 'header_meta_date', wp_date( 'j \d\e F \d\e Y' ) );
 $header_meta_edition = naoeagencia_get_editorial_setting( 'header_meta_edition', __( 'Edição digital em tempo real', 'naoeagencia' ) );
 $header_meta_status = naoeagencia_get_editorial_setting( 'header_meta_status', __( 'Atualizado continuamente', 'naoeagencia' ) );
