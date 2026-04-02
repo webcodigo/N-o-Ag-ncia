@@ -1,11 +1,9 @@
 <?php
 get_header();
 
+$featured_tag      = absint( naoeagencia_get_option( 'featured_tag', 0 ) );
 $featured_category = absint( naoeagencia_get_option( 'featured_category', 0 ) );
 $layout_class      = is_active_sidebar( 'sidebar-1' ) ? 'content-grid content-grid--home' : 'content-grid content-grid--home content-grid--full';
-$home_kicker       = naoeagencia_get_editorial_setting( 'home_kicker', __( 'Portal independente', 'naoeagencia' ) );
-$home_title        = naoeagencia_get_editorial_setting( 'home_title', get_bloginfo( 'name' ) );
-$home_description  = naoeagencia_get_editorial_setting( 'home_description', get_bloginfo( 'description' ) );
 $ticker_label      = naoeagencia_get_editorial_setting( 'ticker_label', __( 'Agora', 'naoeagencia' ) );
 $highlights_label  = naoeagencia_get_editorial_setting( 'highlights_label', __( 'Destaques', 'naoeagencia' ) );
 $highlights_title  = naoeagencia_get_editorial_setting( 'highlights_title', __( 'O que importa agora', 'naoeagencia' ) );
@@ -25,6 +23,11 @@ $hero_args         = array(
 
 if ( $featured_category ) {
 	$hero_args['cat'] = $featured_category;
+}
+
+if ( $featured_tag ) {
+	$hero_args['tag_id'] = $featured_tag;
+	unset( $hero_args['cat'] );
 }
 
 $hero_query       = new WP_Query( $hero_args );
@@ -64,19 +67,6 @@ if ( $ticker_category ) {
 			</div>
 		</section>
 	<?php endif; ?>
-
-	<section class="home-intro home-intro--feature">
-		<div class="home-intro__eyebrow">
-			<p class="section-label"><?php echo esc_html( $home_kicker ); ?></p>
-			<p class="home-intro__stamp"><?php esc_html_e( 'SEO + velocidade + leitura', 'naoeagencia' ); ?></p>
-		</div>
-		<div class="home-intro__grid">
-			<div>
-				<h1 class="home-intro__title"><?php echo esc_html( $home_title ); ?></h1>
-			</div>
-			<p class="home-intro__text"><?php echo esc_html( $home_description ); ?></p>
-		</div>
-	</section>
 
 	<?php if ( $hero_query->have_posts() ) : ?>
 		<section class="hero-story">

@@ -194,7 +194,6 @@ function naoe_tema_settings_init() {
 	);
 
 	add_settings_field( 'custom_logo_url', __( 'URL do logo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'custom_logo_url', 'desc' => 'Cole a URL de uma imagem otimizada para usar como logo.' ) );
-	add_settings_field( 'featured_category', __( 'Categoria do destaque principal', 'naoeagencia' ), 'naoe_tema_category_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'featured_category', 'desc' => 'Selecione a categoria usada no bloco principal da home.' ) );
 	add_settings_field( 'header_meta_date', __( 'Texto da data no topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_date', 'desc' => 'Exemplo: 1 de abril de 2026' ) );
 	add_settings_field( 'header_meta_edition', __( 'Texto editorial do topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_edition', 'desc' => 'Exemplo: Edição digital em tempo real' ) );
 	add_settings_field( 'header_meta_status', __( 'Texto de status do topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_status', 'desc' => 'Exemplo: Atualizado continuamente' ) );
@@ -209,6 +208,7 @@ function naoe_tema_settings_init() {
 	add_settings_field( 'home_kicker', __( 'Kicker da home', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_home_section', array( 'id' => 'home_kicker' ) );
 	add_settings_field( 'home_title', __( 'Título principal da home', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_home_section', array( 'id' => 'home_title' ) );
 	add_settings_field( 'home_description', __( 'Texto de apoio da home', 'naoeagencia' ), 'naoe_tema_textarea_render', 'naoe-tema', 'naoe_tema_home_section', array( 'id' => 'home_description' ) );
+	add_settings_field( 'featured_tag', __( 'Tag do destaque principal', 'naoeagencia' ), 'naoe_tema_tag_render', 'naoe-tema', 'naoe_tema_home_section', array( 'id' => 'featured_tag', 'desc' => 'Selecione a tag usada para puxar a matéria principal da home.' ) );
 	add_settings_field( 'ticker_label', __( 'Rótulo do ticker', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_home_section', array( 'id' => 'ticker_label' ) );
 	add_settings_field( 'ticker_category', __( 'Categoria do ticker', 'naoeagencia' ), 'naoe_tema_category_render', 'naoe-tema', 'naoe_tema_home_section', array( 'id' => 'ticker_category', 'desc' => 'Use uma categoria específica para a faixa de assuntos rápidos do topo.' ) );
 	add_settings_field( 'highlights_label', __( 'Rótulo da faixa de destaques', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_home_section', array( 'id' => 'highlights_label' ) );
@@ -255,8 +255,8 @@ add_action( 'admin_init', 'naoe_tema_settings_init' );
 function naoe_tema_sanitize_settings( $input ) {
 	$sanitized = array();
 
-	$sanitized['custom_logo_url']   = empty( $input['custom_logo_url'] ) ? '' : esc_url_raw( $input['custom_logo_url'] );
-	$sanitized['featured_category'] = empty( $input['featured_category'] ) ? 0 : absint( $input['featured_category'] );
+	$sanitized['custom_logo_url'] = empty( $input['custom_logo_url'] ) ? '' : esc_url_raw( $input['custom_logo_url'] );
+	$sanitized['featured_tag']    = empty( $input['featured_tag'] ) ? 0 : absint( $input['featured_tag'] );
 
 	foreach ( array( 'header_meta_date', 'header_meta_edition', 'header_meta_status', 'home_kicker', 'home_title', 'ticker_label', 'highlights_label', 'highlights_title', 'home_section_1_title', 'home_section_2_title', 'latest_label', 'latest_title' ) as $field ) {
 		$sanitized[ $field ] = empty( $input[ $field ] ) ? '' : sanitize_text_field( $input[ $field ] );
@@ -331,6 +331,35 @@ function naoe_tema_category_render( $args ) {
 			absint( $category->term_id ),
 			selected( $current_id, $category->term_id, false ),
 			esc_html( $category->name )
+		);
+	}
+
+	echo '</select>';
+
+	if ( isset( $args['desc'] ) ) {
+		echo '<p class="description">' . esc_html( $args['desc'] ) . '</p>';
+	}
+}
+
+/**
+ * Render tag select field.
+ *
+ * @param array $args Field arguments.
+ */
+function naoe_tema_tag_render( $args ) {
+	$options    = get_option( 'naoe_tema_settings', array() );
+	$current_id = isset( $options[ $args['id'] ] ) ? absint( $options[ $args['id'] ] ) : 0;
+	$tags       = get_tags( array( 'hide_empty' => false ) );
+
+	echo '<select name="naoe_tema_settings[' . esc_attr( $args['id'] ) . ']" class="regular-text">';
+	echo '<option value="0">' . esc_html__( 'Todas as tags', 'naoeagencia' ) . '</option>';
+
+	foreach ( $tags as $tag ) {
+		printf(
+			'<option value="%1$d" %2$s>%3$s</option>',
+			absint( $tag->term_id ),
+			selected( $current_id, $tag->term_id, false ),
+			esc_html( $tag->name )
 		);
 	}
 

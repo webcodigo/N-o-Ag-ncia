@@ -41,21 +41,6 @@ $header_meta_status = naoeagencia_get_editorial_setting( 'header_meta_status', _
 		</div>
 
 		<div class="header-tools">
-			<nav class="main-navigation" aria-label="<?php esc_attr_e( 'Menu principal', 'naoeagencia' ); ?>">
-				<?php
-				wp_nav_menu(
-					array(
-						'theme_location' => 'menu-1',
-						'menu_id'        => 'primary-menu',
-						'menu_class'     => 'primary-menu',
-						'container'      => false,
-						'depth'          => 3,
-						'fallback_cb'    => 'wp_page_menu',
-					)
-				);
-				?>
-			</nav>
-
 			<div class="header-search">
 				<?php get_search_form(); ?>
 			</div>
