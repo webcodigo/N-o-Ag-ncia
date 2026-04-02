@@ -1,10 +1,12 @@
 <?php
 get_header();
-$layout_class = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-grid content-grid--full';
 ?>
 
-<main id="content" class="site-shell <?php echo esc_attr( $layout_class ); ?>">
-	<section class="content-primary">
+<div class="site-shell page-shell">
+	<?php get_template_part( 'left-rail' ); ?>
+
+<main id="content" class="feed-center">
+	<section class="content-primary content-primary--full">
 		<header class="archive-hero">
 			<p class="section-label"><?php esc_html_e( 'Publicações', 'naoeagencia' ); ?></p>
 			<h1 class="archive-title"><?php bloginfo( 'name' ); ?></h1>
@@ -37,8 +39,9 @@ $layout_class = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-gri
 			</section>
 		<?php endif; ?>
 	</section>
+</main>
 
 	<?php get_sidebar(); ?>
-</main>
+</div>
 
 <?php get_footer(); ?>

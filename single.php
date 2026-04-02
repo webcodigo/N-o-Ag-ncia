@@ -1,6 +1,9 @@
 <?php get_header(); ?>
 
-<main id="content" class="site-shell single-layout">
+<div class="site-shell page-shell">
+	<?php get_template_part( 'left-rail' ); ?>
+
+<main id="content" class="feed-center single-layout">
 	<?php while ( have_posts() ) : the_post(); ?>
 		<article id="post-<?php the_ID(); ?>" <?php post_class( 'single-article' ); ?>>
 			<header class="single-hero">
@@ -99,5 +102,8 @@
 		?>
 	<?php endwhile; ?>
 </main>
+
+	<?php get_sidebar(); ?>
+</div>
 
 <?php get_footer(); ?>

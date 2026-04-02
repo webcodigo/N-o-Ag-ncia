@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockup - Jornal x Twitter</title>
+  <style>
+    :root {
+      --bg: #eef4fb;
+      --panel: #ffffff;
+      --panel-alt: #f7faff;
+      --line: #d6e1f0;
+      --text: #0f172a;
+      --muted: #5b6b84;
+      --brand: #123a78;
+      --brand-strong: #0b2b5b;
+      --brand-soft: #e9f1ff;
+      --accent: #49b8ff;
+      --shadow: 0 16px 38px rgba(11, 43, 91, 0.08);
+      --radius: 22px;
+      --shell: min(1360px, calc(100vw - 32px));
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(18, 58, 120, 0.12), transparent 28%),
+        linear-gradient(180deg, #f5f9ff 0%, #edf4fb 100%);
+    }
+
+    h1, h2, h3, h4, p { margin: 0; }
+
+    .shell {
+      width: var(--shell);
+      margin: 0 auto;
+    }
+
+    .masthead {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(245, 249, 255, 0.92);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    .masthead-meta,
+    .masthead-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .masthead-meta {
+      padding: 10px 0;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .masthead-main {
+      padding: 18px 0 20px;
+    }
+
+    .brand {
+      display: grid;
+      gap: 6px;
+    }
+
+    .brand-kicker {
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .brand-name {
+      font: 800 clamp(34px, 5vw, 60px)/0.95 Georgia, serif;
+      color: var(--brand-strong);
+    }
+
+    .brand-desc {
+      max-width: 46ch;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .search {
+      min-width: 320px;
+      padding: 14px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 760px) 320px;
+      gap: 24px;
+      padding: 24px 0 40px;
+      align-items: start;
+      justify-content: center;
+    }
+
+    .left-rail,
+    .right-rail,
+    .feed,
+    .tweet-article,
+    .hero-card,
+    .rail-card,
+    .feed-card {
+      min-width: 0;
+    }
+
+    .left-rail {
+      position: sticky;
+      top: 124px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .nav-card,
+    .rail-card,
+    .tweet-article,
+    .feed-card,
+    .hero-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .nav-card {
+      padding: 18px;
+    }
+
+    .nav-title {
+      margin-bottom: 12px;
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .nav-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--panel-alt);
+      font-weight: 700;
+    }
+
+    .nav-sub {
+      margin-top: 8px;
+      padding-left: 12px;
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .feed {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-card {
+      overflow: hidden;
+      background: linear-gradient(135deg, #08152b 0%, #123a78 72%, #1d5cb8 100%);
+      color: #fff;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 22px 0;
+    }
+
+    .hero-kicker,
+    .meta-line,
+    .feed-kicker {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .hero-body {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      padding: 20px 22px 22px;
+    }
+
+    .hero-title {
+      font: 800 clamp(34px, 5vw, 62px)/0.93 Georgia, serif;
+      margin: 10px 0 14px;
+    }
+
+    .hero-text {
+      max-width: 42ch;
+      color: rgba(255,255,255,.85);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .hero-image,
+    .feed-image {
+      border-radius: 18px;
+      background: linear-gradient(135deg, #d9e7ff, #8bb9ff);
+      min-height: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-image::after,
+    .feed-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(8, 21, 43, .35) 100%);
+    }
+
+    .hero-image-label,
+    .feed-image-label {
+      position: absolute;
+      left: 14px;
+      bottom: 14px;
+      z-index: 1;
+      max-width: 24ch;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(8, 21, 43, .72);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .feed-card {
+      padding: 18px 18px 18px 72px;
+      position: relative;
+      display: grid;
+      gap: 14px;
+    }
+
+    .feed-card::before {
+      content: "";
+      position: absolute;
+      left: 22px;
+      top: 24px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      box-shadow: 0 0 0 4px #fff;
+    }
+
+    .feed-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .feed-meta strong {
+      color: var(--brand-strong);
+    }
+
+    .feed-title {
+      font: 800 clamp(28px, 4vw, 40px)/1 Georgia, serif;
+      color: var(--text);
+    }
+
+    .feed-text {
+      color: #2a3345;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .feed-actions {
+      display: flex;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .feed-row {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .right-rail {
+      position: sticky;
+      top: 124px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .rail-card {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .rail-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .rail-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rail-item {
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rail-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .rail-item strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .rail-item span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .tweet-article {
+      padding: 20px 22px 26px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .article-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .article-title {
+      font: 800 clamp(34px, 5vw, 56px)/0.95 Georgia, serif;
+    }
+
+    .article-lead {
+      max-width: 60ch;
+      font-size: 20px;
+      line-height: 1.65;
+      color: #20293a;
+    }
+
+    .tweet-block {
+      padding: 18px 18px 18px 66px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(180deg, #fff, #f8fbff);
+      position: relative;
+      display: grid;
+      gap: 10px;
+    }
+
+    .tweet-block::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      box-shadow: 0 0 0 4px #fff;
+    }
+
+    .tweet-block::after {
+      content: "";
+      position: absolute;
+      right: 18px;
+      top: 24px;
+      width: 16px;
+      height: 16px;
+      background:
+        radial-gradient(circle at 2px 50%, rgba(91,107,132,.8) 0 2px, transparent 2.5px),
+        radial-gradient(circle at 8px 50%, rgba(91,107,132,.8) 0 2px, transparent 2.5px),
+        radial-gradient(circle at 14px 50%, rgba(91,107,132,.8) 0 2px, transparent 2.5px);
+    }
+
+    .tweet-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .tweet-head strong {
+      color: var(--brand-strong);
+    }
+
+    .tweet-title {
+      font: 800 clamp(28px, 4vw, 40px)/1.08 Inter, system-ui, sans-serif;
+      letter-spacing: -.03em;
+      max-width: 25ch;
+    }
+
+    .tweet-copy {
+      max-width: 58ch;
+      font-size: 18px;
+      line-height: 1.75;
+      color: #253043;
+    }
+
+    @media (max-width: 1180px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .left-rail,
+      .right-rail {
+        position: static;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .hero-body,
+      .feed-row {
+        grid-template-columns: 1fr;
+      }
+      .search {
+        min-width: 0;
+        width: 100%;
+      }
+      .masthead-main {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="shell masthead-meta">
+      <p>1 de abril de 2026</p>
+      <p>Edição digital em tempo real</p>
+      <p>Atualizado continuamente</p>
+    </div>
+    <div class="shell masthead-main">
+      <div class="brand">
+        <p class="brand-kicker">Jornalismo digital independente</p>
+        <h1 class="brand-name">Não é Agência</h1>
+        <p class="brand-desc">Uma homepage de jornal online com comportamento de feed: rápida no uso, forte na hierarquia e profunda no conteúdo.</p>
+      </div>
+      <div class="search">Buscar editorias, temas, autores e histórias</div>
+    </div>
+  </header>
+
+  <div class="shell layout">
+    <aside class="left-rail">
+      <div class="nav-card">
+        <p class="nav-title">Navegação</p>
+        <div class="nav-list">
+          <div class="nav-item">Home</div>
+          <div class="nav-item">Google
+            <div class="nav-sub">
+              <span>Discover</span>
+              <span>SEO</span>
+              <span>AMP</span>
+            </div>
+          </div>
+          <div class="nav-item">IA
+            <div class="nav-sub">
+              <span>Modelos</span>
+              <span>Automação</span>
+            </div>
+          </div>
+          <div class="nav-item">Mídia</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="feed">
+      <section class="hero-card">
+        <div class="hero-top">
+          <p class="hero-kicker">Destaque do dia</p>
+          <p class="meta-line">Google Discover • 6 min</p>
+        </div>
+        <div class="hero-body">
+          <div>
+            <h2 class="hero-title">O que realmente distribui tráfego no Discover hoje</h2>
+            <p class="hero-text">Abertura com peso de manchete, contexto editorial e leitura rápida. A peça principal precisa parecer notícia em evidência, não só um card bonito.</p>
+          </div>
+          <div class="hero-image">
+            <div class="hero-image-label">Abrir matéria: lógica real de distribuição dos conteúdos</div>
+          </div>
+        </div>
+      </section>
+
+      <article class="feed-card">
+        <div class="feed-meta"><strong>Google</strong><span>@editoria-google</span><span>há 2 h</span></div>
+        <h3 class="feed-title">O que importa agora</h3>
+        <div class="feed-row">
+          <p class="feed-text">O fluxo principal precisa parecer uma timeline viva: títulos nítidos, leitura veloz, cards empilhados e imagem como apoio. A manchete não pode competir com o overlay da foto.</p>
+          <div class="feed-image">
+            <div class="feed-image-label">Abrir matéria: Portal brasileiro automatiza conteúdo para 93 idiomas</div>
+          </div>
+        </div>
+        <div class="feed-actions"><span>24 respostas</span><span>112 compartilhamentos</span><span>2,4 mil leituras</span></div>
+      </article>
+
+      <article class="tweet-article">
+        <div class="article-top">
+          <div>
+            <p class="hero-kicker" style="color:#5b6b84">Análise</p>
+            <h2 class="article-title">Como um artigo pode parecer feed sem perder densidade</h2>
+          </div>
+          <p class="meta-line" style="color:#5b6b84">Por Redação • 9 min</p>
+        </div>
+
+        <p class="article-lead">Em vez de transformar o texto em rede social rasa, a proposta é organizar a leitura em blocos com aparência de atualização independente, como se cada ideia principal fosse uma nova entrada na timeline editorial.</p>
+
+        <section class="tweet-block">
+          <div class="tweet-head"><strong>Não é Agência</strong><span>@redacao</span><span>há instantes</span></div>
+          <h3 class="tweet-title">Cada subtítulo precisa entrar como uma atualização nova</h3>
+          <p class="tweet-copy">O leitor deve sentir uma mudança de contexto sempre que chega em um novo bloco. Isso não exige textos literais como “novo tweet”, e sim uma caixa, ritmo, avatar visual, respiro e densidade controlada.</p>
+        </section>
+
+        <section class="tweet-block">
+          <div class="tweet-head"><strong>Não é Agência</strong><span>@redacao</span><span>há instantes</span></div>
+          <h3 class="tweet-title">A sensação de jornal vem da hierarquia, não do excesso de ornamento</h3>
+          <p class="tweet-copy">Masthead, manchete forte, editoria clara, data, profundidade de texto e um rail de contexto ao lado são os elementos que trazem autoridade de portal. O feed entra na ergonomia de uso, não como caricatura.</p>
+        </section>
+      </article>
+    </main>
+
+    <aside class="right-rail">
+      <div class="rail-card">
+        <p class="rail-title">Em alta</p>
+        <div class="rail-list">
+          <div class="rail-item">
+            <strong>SEO técnico</strong>
+            <span>Como estruturar editorias, subcategorias e autoridade topical.</span>
+          </div>
+          <div class="rail-item">
+            <strong>Discover</strong>
+            <span>Leituras rápidas, contexto profundo e distribuição previsível.</span>
+          </div>
+          <div class="rail-item">
+            <strong>IA aplicada</strong>
+            <span>Automação sem perder clareza editorial.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rail-card">
+        <p class="rail-title">Leitura do momento</p>
+        <div class="rail-list">
+          <div class="rail-item">
+            <strong>O problema de overlays grandes nas imagens</strong>
+            <span>A imagem pode contextualizar, mas a manchete precisa continuar sendo o elemento dominante.</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>

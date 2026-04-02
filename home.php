@@ -49,9 +49,12 @@ if ( $ticker_category ) {
 }
 ?>
 
-<main id="content" class="home-layout">
+<div class="site-shell page-shell">
+	<?php get_template_part( 'left-rail' ); ?>
+
+<main id="content" class="feed-center home-layout">
 	<?php if ( $ticker_query->have_posts() ) : ?>
-		<section class="site-shell trend-strip" aria-label="<?php esc_attr_e( 'Últimos destaques', 'naoeagencia' ); ?>">
+	<section class="trend-strip" aria-label="<?php esc_attr_e( 'Últimos destaques', 'naoeagencia' ); ?>">
 			<p class="trend-strip__label"><?php echo esc_html( $ticker_label ); ?></p>
 			<div class="trend-strip__items">
 				<?php while ( $ticker_query->have_posts() ) : $ticker_query->the_post(); ?>
@@ -62,7 +65,7 @@ if ( $ticker_category ) {
 		</section>
 	<?php endif; ?>
 
-	<section class="site-shell home-intro home-intro--feature">
+	<section class="home-intro home-intro--feature">
 		<div class="home-intro__eyebrow">
 			<p class="section-label"><?php echo esc_html( $home_kicker ); ?></p>
 			<p class="home-intro__stamp"><?php esc_html_e( 'SEO + velocidade + leitura', 'naoeagencia' ); ?></p>
@@ -76,7 +79,7 @@ if ( $ticker_category ) {
 	</section>
 
 	<?php if ( $hero_query->have_posts() ) : ?>
-		<section class="site-shell hero-story">
+		<section class="hero-story">
 			<?php while ( $hero_query->have_posts() ) : $hero_query->the_post(); ?>
 				<?php $featured_post_id = get_the_ID(); ?>
 				<article <?php post_class( 'hero-story__article' ); ?>>
@@ -96,12 +99,12 @@ if ( $ticker_category ) {
 	<?php endif; ?>
 
 	<?php if ( is_active_sidebar( 'home-top' ) ) : ?>
-		<section class="site-shell home-widget-row">
+		<section class="home-widget-row">
 			<?php dynamic_sidebar( 'home-top' ); ?>
 		</section>
 	<?php endif; ?>
 
-	<section class="site-shell home-section">
+	<section class="home-section">
 		<div class="section-heading section-heading--split">
 			<div>
 				<p class="section-label"><?php echo esc_html( $highlights_label ); ?></p>
@@ -145,8 +148,8 @@ if ( $ticker_category ) {
 	<?php naoeagencia_render_home_section( $section_1_cat, $section_1_title ); ?>
 	<?php naoeagencia_render_home_section( $section_2_cat, $section_2_title ); ?>
 
-	<section class="site-shell <?php echo esc_attr( $layout_class ); ?>">
-		<div class="content-primary">
+	<section class="<?php echo esc_attr( $layout_class ); ?>">
+		<div class="content-primary content-primary--full">
 			<div class="section-heading section-heading--split">
 				<div>
 					<p class="section-label"><?php echo esc_html( $latest_label ); ?></p>
@@ -192,14 +195,16 @@ if ( $ticker_category ) {
 			<?php endif; ?>
 		</div>
 
-		<?php get_sidebar(); ?>
 	</section>
 
 	<?php if ( is_active_sidebar( 'home-bottom' ) ) : ?>
-		<section class="site-shell home-widget-row">
+		<section class="home-widget-row">
 			<?php dynamic_sidebar( 'home-bottom' ); ?>
 		</section>
 	<?php endif; ?>
 </main>
+
+	<?php get_sidebar(); ?>
+</div>
 
 <?php get_footer(); ?>

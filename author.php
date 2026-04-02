@@ -1,12 +1,13 @@
 <?php
 get_header();
-
-$layout_class = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-grid content-grid--full';
 $author       = get_queried_object();
 ?>
 
-<main id="content" class="site-shell <?php echo esc_attr( $layout_class ); ?>">
-	<section class="content-primary">
+<div class="site-shell page-shell">
+	<?php get_template_part( 'left-rail' ); ?>
+
+<main id="content" class="feed-center">
+	<section class="content-primary content-primary--full">
 		<header class="archive-hero archive-hero--editorial archive-hero--author">
 			<p class="section-label"><?php esc_html_e( 'Autor', 'naoeagencia' ); ?></p>
 			<h1 class="archive-title"><?php echo esc_html( $author->display_name ); ?></h1>
@@ -42,8 +43,9 @@ $author       = get_queried_object();
 			</section>
 		<?php endif; ?>
 	</section>
+</main>
 
 	<?php get_sidebar(); ?>
-</main>
+</div>
 
 <?php get_footer(); ?>

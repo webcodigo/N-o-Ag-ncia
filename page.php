@@ -1,10 +1,12 @@
 <?php
 get_header();
-$layout_class = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-grid content-grid--full';
 ?>
 
-<main id="content" class="site-shell <?php echo esc_attr( $layout_class ); ?>">
-	<section class="content-primary">
+<div class="site-shell page-shell">
+	<?php get_template_part( 'left-rail' ); ?>
+
+<main id="content" class="feed-center">
+	<section class="content-primary content-primary--full">
 		<?php while ( have_posts() ) : the_post(); ?>
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'page-article' ); ?>>
 				<header class="archive-hero">
@@ -24,8 +26,9 @@ $layout_class = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-gri
 			?>
 		<?php endwhile; ?>
 	</section>
+</main>
 
 	<?php get_sidebar(); ?>
-</main>
+</div>
 
 <?php get_footer(); ?>

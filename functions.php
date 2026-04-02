@@ -195,6 +195,9 @@ function naoe_tema_settings_init() {
 
 	add_settings_field( 'custom_logo_url', __( 'URL do logo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'custom_logo_url', 'desc' => 'Cole a URL de uma imagem otimizada para usar como logo.' ) );
 	add_settings_field( 'featured_category', __( 'Categoria do destaque principal', 'naoeagencia' ), 'naoe_tema_category_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'featured_category', 'desc' => 'Selecione a categoria usada no bloco principal da home.' ) );
+	add_settings_field( 'header_meta_date', __( 'Texto da data no topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_date', 'desc' => 'Exemplo: 1 de abril de 2026' ) );
+	add_settings_field( 'header_meta_edition', __( 'Texto editorial do topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_edition', 'desc' => 'Exemplo: Edição digital em tempo real' ) );
+	add_settings_field( 'header_meta_status', __( 'Texto de status do topo', 'naoeagencia' ), 'naoe_tema_input_render', 'naoe-tema', 'naoe_tema_general_section', array( 'id' => 'header_meta_status', 'desc' => 'Exemplo: Atualizado continuamente' ) );
 
 	add_settings_section(
 		'naoe_tema_home_section',
@@ -255,7 +258,7 @@ function naoe_tema_sanitize_settings( $input ) {
 	$sanitized['custom_logo_url']   = empty( $input['custom_logo_url'] ) ? '' : esc_url_raw( $input['custom_logo_url'] );
 	$sanitized['featured_category'] = empty( $input['featured_category'] ) ? 0 : absint( $input['featured_category'] );
 
-	foreach ( array( 'home_kicker', 'home_title', 'ticker_label', 'highlights_label', 'highlights_title', 'home_section_1_title', 'home_section_2_title', 'latest_label', 'latest_title' ) as $field ) {
+	foreach ( array( 'header_meta_date', 'header_meta_edition', 'header_meta_status', 'home_kicker', 'home_title', 'ticker_label', 'highlights_label', 'highlights_title', 'home_section_1_title', 'home_section_2_title', 'latest_label', 'latest_title' ) as $field ) {
 		$sanitized[ $field ] = empty( $input[ $field ] ) ? '' : sanitize_text_field( $input[ $field ] );
 	}
 
@@ -539,7 +542,7 @@ function naoeagencia_render_home_section( $category_id, $title ) {
 		return;
 	}
 	?>
-	<section class="site-shell home-section home-section--category">
+	<section class="home-section home-section--category">
 		<div class="section-heading section-heading--split">
 			<div>
 				<p class="section-label"><?php echo esc_html( $category->name ); ?></p>

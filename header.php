@@ -12,13 +12,16 @@
 
 <?php
 $custom_logo_url = naoeagencia_get_option( 'custom_logo_url' );
+$header_meta_date = naoeagencia_get_editorial_setting( 'header_meta_date', wp_date( 'j \d\e F \d\e Y' ) );
+$header_meta_edition = naoeagencia_get_editorial_setting( 'header_meta_edition', __( 'Edição digital em tempo real', 'naoeagencia' ) );
+$header_meta_status = naoeagencia_get_editorial_setting( 'header_meta_status', __( 'Atualizado continuamente', 'naoeagencia' ) );
 ?>
 
 <header class="site-header">
 	<div class="site-shell site-header__meta">
-		<p><?php echo esc_html( wp_date( 'j \d\e F \d\e Y' ) ); ?></p>
-		<p><?php esc_html_e( 'Edição digital em tempo real', 'naoeagencia' ); ?></p>
-		<p><?php esc_html_e( 'Atualizado continuamente', 'naoeagencia' ); ?></p>
+		<p><?php echo esc_html( $header_meta_date ); ?></p>
+		<p><?php echo esc_html( $header_meta_edition ); ?></p>
+		<p><?php echo esc_html( $header_meta_status ); ?></p>
 	</div>
 	<div class="site-shell site-header__inner">
 		<div class="site-branding">

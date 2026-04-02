@@ -1,10 +1,12 @@
 <?php
 get_header();
-$layout_class = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-grid content-grid--full';
 ?>
 
-<main id="content" class="site-shell <?php echo esc_attr( $layout_class ); ?>">
-	<section class="content-primary">
+<div class="site-shell page-shell">
+	<?php get_template_part( 'left-rail' ); ?>
+
+<main id="content" class="feed-center">
+	<section class="content-primary content-primary--full">
 		<header class="archive-hero">
 			<p class="section-label"><?php esc_html_e( 'Busca', 'naoeagencia' ); ?></p>
 			<h1 class="archive-title">
@@ -22,11 +24,7 @@ $layout_class = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-gri
 			<div class="story-list">
 				<?php while ( have_posts() ) : the_post(); ?>
 					<article id="post-<?php the_ID(); ?>" <?php post_class( 'story-card story-card--horizontal' ); ?>>
-						<?php if ( has_post_thumbnail() ) : ?>
-							<a class="story-card__media" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
-								<?php the_post_thumbnail( 'naoeagencia-card', array( 'loading' => 'lazy' ) ); ?>
-							</a>
-						<?php endif; ?>
+						<?php naoeagencia_post_media( 'naoeagencia-card', 'story-card__media', array( 'loading' => 'lazy' ) ); ?>
 
 						<div class="story-card__content">
 							<div class="story-card__tax"><?php naoeagencia_the_category_list(); ?></div>
@@ -49,8 +47,9 @@ $layout_class = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-gri
 			</section>
 		<?php endif; ?>
 	</section>
+</main>
 
 	<?php get_sidebar(); ?>
-</main>
+</div>
 
 <?php get_footer(); ?>

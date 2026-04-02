@@ -1,7 +1,6 @@
 <?php
 get_header();
 
-$layout_class  = is_active_sidebar( 'sidebar-1' ) ? 'content-grid' : 'content-grid content-grid--full';
 $current_term  = get_queried_object();
 $lead_post_ids = array();
 $lead_query    = new WP_Query(
@@ -14,8 +13,11 @@ $lead_query    = new WP_Query(
 );
 ?>
 
-<main id="content" class="category-layout">
-	<section class="site-shell archive-hero archive-hero--editorial">
+<div class="site-shell page-shell">
+	<?php get_template_part( 'left-rail' ); ?>
+
+<main id="content" class="feed-center category-layout">
+	<section class="archive-hero archive-hero--editorial">
 		<p class="section-label"><?php esc_html_e( 'Categoria', 'naoeagencia' ); ?></p>
 		<h1 class="archive-title"><?php single_cat_title(); ?></h1>
 		<?php if ( ! empty( $current_term->description ) ) : ?>
@@ -24,7 +26,7 @@ $lead_query    = new WP_Query(
 	</section>
 
 	<?php if ( ! is_paged() && $lead_query->have_posts() ) : ?>
-		<section class="site-shell hero-story hero-story--archive">
+		<section class="hero-story hero-story--archive">
 			<?php while ( $lead_query->have_posts() ) : $lead_query->the_post(); ?>
 				<?php $lead_post_ids[] = get_the_ID(); ?>
 				<article <?php post_class( 'hero-story__article' ); ?>>
@@ -42,8 +44,8 @@ $lead_query    = new WP_Query(
 		</section>
 	<?php endif; ?>
 
-	<section class="site-shell <?php echo esc_attr( $layout_class ); ?>">
-		<section class="content-primary">
+	<section class="content-grid content-grid--full">
+		<section class="content-primary content-primary--full">
 			<div class="section-heading section-heading--split">
 				<div>
 					<p class="section-label"><?php esc_html_e( 'Mais desta editoria', 'naoeagencia' ); ?></p>
@@ -81,8 +83,10 @@ $lead_query    = new WP_Query(
 			<?php endif; ?>
 		</section>
 
-		<?php get_sidebar(); ?>
 	</section>
 </main>
+
+	<?php get_sidebar(); ?>
+</div>
 
 <?php get_footer(); ?>
