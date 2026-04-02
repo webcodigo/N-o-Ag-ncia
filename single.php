@@ -23,8 +23,8 @@
 			<div class="single-content-grid">
 				<aside class="single-aside">
 					<div class="single-aside__box single-aside__box--status">
-						<p class="aside-label"><?php esc_html_e( 'Thread editorial', 'naoeagencia' ); ?></p>
-						<p class="aside-value"><?php esc_html_e( 'Leitura em blocos rápidos, contexto em profundidade.', 'naoeagencia' ); ?></p>
+						<p class="aside-label"><?php esc_html_e( 'Leitura', 'naoeagencia' ); ?></p>
+						<p class="aside-value"><?php esc_html_e( 'Atualizações curtas, contexto profundo e navegação rápida entre ideias.', 'naoeagencia' ); ?></p>
 					</div>
 
 					<div class="single-aside__box">

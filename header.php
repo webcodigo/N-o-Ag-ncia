@@ -15,6 +15,11 @@ $custom_logo_url = naoeagencia_get_option( 'custom_logo_url' );
 ?>
 
 <header class="site-header">
+	<div class="site-shell site-header__meta">
+		<p><?php echo esc_html( wp_date( 'j \d\e F \d\e Y' ) ); ?></p>
+		<p><?php esc_html_e( 'Edição digital em tempo real', 'naoeagencia' ); ?></p>
+		<p><?php esc_html_e( 'Atualizado continuamente', 'naoeagencia' ); ?></p>
+	</div>
 	<div class="site-shell site-header__inner">
 		<div class="site-branding">
 			<p class="site-kicker"><?php esc_html_e( 'Jornalismo digital independente', 'naoeagencia' ); ?></p>
@@ -39,7 +44,9 @@ $custom_logo_url = naoeagencia_get_option( 'custom_logo_url' );
 					array(
 						'theme_location' => 'menu-1',
 						'menu_id'        => 'primary-menu',
+						'menu_class'     => 'primary-menu',
 						'container'      => false,
+						'depth'          => 3,
 						'fallback_cb'    => 'wp_page_menu',
 					)
 				);

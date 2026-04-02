@@ -404,8 +404,8 @@ function naoeagencia_option_enabled( $key ) {
 function naoeagencia_media_badge( $title ) {
 	?>
 	<span class="story-media-badge">
-		<span class="story-media-badge__label"><?php esc_html_e( 'Acessar', 'naoeagencia' ); ?></span>
-		<span class="story-media-badge__title"><?php echo esc_html( $title ); ?></span>
+		<span class="story-media-badge__label"><?php esc_html_e( 'Abrir matéria', 'naoeagencia' ); ?></span>
+		<span class="story-media-badge__title"><?php echo esc_html( wp_trim_words( $title, 7, '...' ) ); ?></span>
 	</span>
 	<?php
 }
