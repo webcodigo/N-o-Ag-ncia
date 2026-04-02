@@ -3,7 +3,7 @@ Theme Name: Não é Agência Theme
 Theme URI: https://naoeagencia.com.br/
 Author: Willian Porto
 Description: Tema editorial rápido, responsivo e focado em SEO, inspirado em portais de notícia contemporâneos.
-Version: 3.16
+Version: 3.17
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: naoeagencia
@@ -411,6 +411,7 @@ select {
 	transition: transform 0.24s ease;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
+	pointer-events: none;
 }
 
 .mobile-editorial-drawer__inner {
@@ -471,6 +472,7 @@ select {
 	background: rgba(8, 21, 43, 0.38);
 	opacity: 0;
 	transition: opacity 0.24s ease;
+	pointer-events: none;
 }
 
 .mobile-editorial-drawer__search .search-form {
@@ -524,10 +526,12 @@ body.has-mobile-drawer {
 
 body.has-mobile-drawer .mobile-editorial-drawer {
 	transform: translateX(0);
+	pointer-events: auto;
 }
 
 body.has-mobile-drawer .header-drawer-overlay {
 	opacity: 1;
+	pointer-events: auto;
 }
 
 .button-link--inverse {
